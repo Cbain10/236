@@ -16,7 +16,7 @@ void Scanner::Scan(string fileName) {
     inFile.open(fileName);
     if (!inFile) {
         cout << "The file had a problem opening." << endl;
-        exit(1);
+        exit(0);
     }
     
     string tempString = "";
