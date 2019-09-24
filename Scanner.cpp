@@ -20,62 +20,68 @@ void Scanner::Scan(string fileName) {
     }
     
     string tempString = "";
-    int currentLine;
-    int startingLine;
+    int currentLine = 1;
+    int startingLine = 1;
     vector<Token*> myVector;
     
         do {
+            if (inFile.peek() == '\n') {
+                currentLine++;
+            }
+            
             // ID or Keywords
             if (isalpha(inFile.peek())) {
+                startingLine = currentLine;
                 do {
                     tempString.push_back(inFile.get());
                 } while ((inFile.peek() != '\n') && (inFile.peek() != ' ') && (inFile.peek() != '\t') && (isalnum(inFile.peek())));
-    //            if ((inFile.peek() == ' ') || (inFile.peek() == '\t') || (inFile.peek() == '\n')) {
-    //                inFile.get();
-    //            }
                 // Keywords
                 if (tempString == "Schemes") {
                     Token* tokenObject = new Token();
                     tokenObject->tokenValue = tempString;
                     tokenObject->tokenType = "SCHEMES";
-//                    tokenObject->toString();
+                    tokenObject->startLine = startingLine;
                     myVector.push_back(tokenObject);
                 }
                 else if (tempString == "Facts") {
                     Token* tokenObject = new Token();
                     tokenObject->tokenValue = tempString;
                     tokenObject->tokenType = "FACTS";
-//                    tokenObject->toString();
+                    tokenObject->startLine = startingLine;
                     myVector.push_back(tokenObject);
                 }
                 else if (tempString == "Rules") {
                     Token* tokenObject = new Token();
                     tokenObject->tokenValue = tempString;
                     tokenObject->tokenType = "RULES";
-//                    tokenObject->toString();
+                    tokenObject->startLine = startingLine;
                     myVector.push_back(tokenObject);
                 }
                 else if (tempString == "Queries") {
                     Token* tokenObject = new Token();
                     tokenObject->tokenValue = tempString;
                     tokenObject->tokenType = "QUERIES";
-//                    tokenObject->toString();
+                    tokenObject->startLine = startingLine;
                     myVector.push_back(tokenObject);
                 }
                 else {
                     Token* tokenObject = new Token();
                     tokenObject->tokenValue = tempString;
                     tokenObject->tokenType = "ID";
-//                    tokenObject->toString();
+                    tokenObject->startLine = startingLine;
                     myVector.push_back(tokenObject);
                 }
             }
     
             // MLComment and Single-Line Comment
             else if (inFile.peek() == '#') {
+                startingLine = currentLine;
                 tempString.push_back(inFile.get());
                 if (inFile.peek() == '|') {
                     do {
+                        if (inFile.peek() == '\n') {
+                            currentLine++;
+                        }
                         tempString.push_back(inFile.get());
                     } while ((inFile.peek() != '|') && (inFile.peek() != EOF));
                     if (inFile.peek() == '|') {
@@ -87,7 +93,7 @@ void Scanner::Scan(string fileName) {
                     Token* tokenObject = new Token();
                     tokenObject->tokenValue = tempString;
                     tokenObject->tokenType = "COMMENT";
-//                    tokenObject->toString();
+                    tokenObject->startLine = startingLine;
                     myVector.push_back(tokenObject);
                 }
                 // Single-Line Comment
@@ -98,7 +104,7 @@ void Scanner::Scan(string fileName) {
                     Token* tokenObject = new Token();
                     tokenObject->tokenValue = tempString;
                     tokenObject->tokenType = "COMMENT";
-//                    tokenObject->toString();
+                    tokenObject->startLine = startingLine;
                     myVector.push_back(tokenObject);
                 }
             }
@@ -107,7 +113,11 @@ void Scanner::Scan(string fileName) {
             else if (inFile.peek() == '\'') {
                 bool goodApostrophe = false;
                 bool goodString = false;
+                startingLine = currentLine;
                 do {
+                    if (inFile.peek() == '\n') {
+                        currentLine++;
+                    }
                     tempString.push_back(inFile.get());
                     if (inFile.peek() == '\'') {
                         tempString.push_back(inFile.get());
@@ -122,25 +132,26 @@ void Scanner::Scan(string fileName) {
                     Token* tokenObject = new Token();
                     tokenObject->tokenValue = tempString;
                     tokenObject->tokenType = "STRING";
-//                    tokenObject->toString();
+                    tokenObject->startLine = startingLine;
                     myVector.push_back(tokenObject);
                 } else {
                     Token* tokenObject = new Token();
                     tokenObject->tokenValue = tempString;
                     tokenObject->tokenType = "UNDEFINED";
-//                    tokenObject->toString();
+                    tokenObject->startLine = startingLine;
                     myVector.push_back(tokenObject);
                 }
             }
     
             // symbols or UNDEFINED
             else {
+                startingLine = currentLine;
                 if (inFile.peek() == ',') {
                     tempString.push_back(inFile.get());
                     Token* tokenObject = new Token();
                     tokenObject->tokenValue = tempString;
                     tokenObject->tokenType = "COMMA";
-//                    tokenObject->toString();
+                    tokenObject->startLine = startingLine;
                     myVector.push_back(tokenObject);
                     // COMMA
                 }
@@ -149,7 +160,7 @@ void Scanner::Scan(string fileName) {
                     Token* tokenObject = new Token();
                     tokenObject->tokenValue = tempString;
                     tokenObject->tokenType = "PERIOD";
-//                    tokenObject->toString();
+                    tokenObject->startLine = startingLine;
                     myVector.push_back(tokenObject);
                     // PERIOD
                 }
@@ -158,7 +169,7 @@ void Scanner::Scan(string fileName) {
                     Token* tokenObject = new Token();
                     tokenObject->tokenValue = tempString;
                     tokenObject->tokenType = "Q_MARK";
-//                    tokenObject->toString();
+                    tokenObject->startLine = startingLine;
                     myVector.push_back(tokenObject);
                     // Q_MARK
                 }
@@ -167,7 +178,7 @@ void Scanner::Scan(string fileName) {
                     Token* tokenObject = new Token();
                     tokenObject->tokenValue = tempString;
                     tokenObject->tokenType = "LEFT_PAREN";
-//                    tokenObject->toString();
+                    tokenObject->startLine = startingLine;
                     myVector.push_back(tokenObject);
                     // LEFT_PAREN
                 }
@@ -176,7 +187,7 @@ void Scanner::Scan(string fileName) {
                     Token* tokenObject = new Token();
                     tokenObject->tokenValue = tempString;
                     tokenObject->tokenType = "RIGHT_PAREN";
-//                    tokenObject->toString();
+                    tokenObject->startLine = startingLine;
                     myVector.push_back(tokenObject);
                     // RIGHT_PAREN
                 }
@@ -188,7 +199,7 @@ void Scanner::Scan(string fileName) {
                         Token* tokenObject = new Token();
                         tokenObject->tokenValue = tempString;
                         tokenObject->tokenType = "COLON_DASH";
-//                        tokenObject->toString();
+                        tokenObject->startLine = startingLine;
                         myVector.push_back(tokenObject);
                         isColonDash = true;
                         // COLON_DASH
@@ -197,7 +208,7 @@ void Scanner::Scan(string fileName) {
                         Token* tokenObject = new Token();
                         tokenObject->tokenValue = tempString;
                         tokenObject->tokenType = "COLON";
-//                        tokenObject->toString();
+                        tokenObject->startLine = startingLine;
                         myVector.push_back(tokenObject);
                         // COLON
                     }
@@ -207,7 +218,7 @@ void Scanner::Scan(string fileName) {
                     Token* tokenObject = new Token();
                     tokenObject->tokenValue = tempString;
                     tokenObject->tokenType = "MULTIPLY";
-//                    tokenObject->toString();
+                    tokenObject->startLine = startingLine;
                     myVector.push_back(tokenObject);
                     // MULTIPLY
                 }
@@ -216,7 +227,7 @@ void Scanner::Scan(string fileName) {
                     Token* tokenObject = new Token();
                     tokenObject->tokenValue = tempString;
                     tokenObject->tokenType = "ADD";
-//                    tokenObject->toString();
+                    tokenObject->startLine = startingLine;
                     myVector.push_back(tokenObject);
                     // ADD
                 } else if ((inFile.peek() == ' ') || (inFile.peek() == '\t') || (inFile.peek() == '\n')) {
@@ -227,7 +238,7 @@ void Scanner::Scan(string fileName) {
                     Token* tokenObject = new Token();
                     tokenObject->tokenValue = tempString;
                     tokenObject->tokenType = "UNDEFINED";
-//                    tokenObject->toString();
+                    tokenObject->startLine = startingLine;
                     myVector.push_back(tokenObject);
                     // UNDEFINED
                 }
@@ -236,23 +247,20 @@ void Scanner::Scan(string fileName) {
             tempString = "";
         } while (inFile.peek() != EOF);
     
+    currentLine++;
+    startingLine = currentLine;
+    Token* tokenObject = new Token();
+    tokenObject->tokenValue = "";
+    tokenObject->tokenType = "EOF";
+    tokenObject->startLine = startingLine;
+    myVector.push_back(tokenObject);
+    
     // print the vector
     for (int i = 0; i < myVector.size(); i++) {
         myVector.at(i)->toString();
     }
     
-        // will need to keep track of a variable starting line and also current line.
-        // at beginning of every function call, starting line should == current line.
-    
-        // initialize empty vector of Token objects
-        // for all cout calls, create new Token object, push it to the vector
-            // next iteration the object will be recreated, but the old one will still be in the TokenVector
-    
-        // pushback token into vector
-        // change print toString() to iterated through vector
-    
-    
-        inFile.close();
-    
+    cout << "Total Tokens = " << myVector.size() << endl;
+        
     inFile.close();
 }

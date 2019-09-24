@@ -14,5 +14,5 @@ using namespace std;
 
 void Token::toString() {
     // change to iterate through the vector of Tokens
-    cout << "(" << tokenType << ", \"" << tokenValue << "\", 5)" << endl;
+    cout << "(" << tokenType << ",\"" << tokenValue << "\"," << startLine << ")" << endl;
 };
