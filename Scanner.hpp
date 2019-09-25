@@ -25,9 +25,7 @@ public:
     Scanner(string filename);
     vector<Token> getAllTokens();
     void Scan(string fileName);
-    
 protected:
-    
 };
 
 

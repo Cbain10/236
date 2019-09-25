@@ -20,12 +20,11 @@ using namespace std;
 int main(int argc, char* argv[]) {
     
     // input from command line
-    // change name to "lab1"
-    // Valgrind? Need to go through and delete pointers to avoid memory leaks
     
-    string userInput;
-    cout << "Enter Filename:" << endl;
-    cin >> userInput;
+    string userInput = argv[1];
+    cout << userInput << endl;
+
+//    string userInput = "test_case2.txt";
     
     Scanner scanFile(userInput);
     scanFile.Scan(userInput);
