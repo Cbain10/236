@@ -6,7 +6,7 @@
 //  Copyright © 2019 Christian Bain. All rights reserved.
 //
 
-#include "Scanner.hpp"
+#include "Scanner.h"
 
 Scanner::Scanner(string filename){};
 
@@ -253,7 +253,12 @@ void Scanner::Scan(string fileName) {
                 // ADD
             } else if ((inFile.peek() == ' ') || (inFile.peek() == '\t') || (inFile.peek() == '\n')) {
                 tempString.push_back(inFile.get());
+            } else if (inFile.peek() == EOF) {
+                
             }
+            
+            
+            
             else {
                 tempString.push_back(inFile.get());
                 Token* tokenObject = new Token();

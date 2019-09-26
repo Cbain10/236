@@ -12,8 +12,8 @@
 #include <vector>
 #include <fstream>
 
-#include "Token.hpp"
-#include "Scanner.hpp"
+#include "Token.h"
+#include "Scanner.h"
 
 using namespace std;
 
@@ -22,8 +22,6 @@ int main(int argc, char* argv[]) {
     // input from command line
     
     string userInput = argv[1];
-    cout << userInput << endl;
-
 //    string userInput = "test_case2.txt";
     
     Scanner scanFile(userInput);
